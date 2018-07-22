@@ -8,38 +8,53 @@ class TodoApp extends Component {
     data: []
   }
 
-  // TODO: handleAddClick = () => {}
+  handleAddClick = () => {
+    const now = new Date()
+    const item = {
+      name: this.state.text, 
+      time: `${now.getMinutes() + 1}分${now.getSeconds()}秒`,
+      key: now.getTime()
+    }      
+    this.setState({
+      data: [...this.state.data, item],
+      text: ''
+    })
+  }
   
-
-  // TODO: handleTextChange = () => {}
+  handleTextChange = (text) => {
+    this.setState({
+      text
+    })
+  }
   
+  handleDeleteClick = (index) => {
+    this.setState({
+      data: this.state.data.filter( (item, i) => (i !== index) )
+    })
+  }
 
-  // TODO: handleDeleteClick = () => {}
-
-
-  // TODO: { ... }
   render () {
     return (
       <div>
         <div className='row mt-5'>
           <div className='col-sm-9'>
-            <TextInput text={''} textChangeHandler={''} />
+            <TextInput text={this.state.text} textChangeHandler={this.handleTextChange}/>
           </div>
           <div className='col-sm-3'>
             <button 
               type="button" 
               className="btn btn-primary" 
-              onClick={ () => {} }
-              disabled={true}
+              onClick={ () => {this.handleAddClick()} }
+              disabled={!(this.state.text.trim())}
             >
               Add
             </button>
           </div>
         </div>
-
+  
         <div className="row">
           <div className="col-sm-12">
-            <TodoList data={''} deleteClickHandler={''}/>
+            <TodoList data={this.state.data} deleteClickHandler={this.handleDeleteClick}/>
           </div>
         </div>
       </div>
